@@ -145,9 +145,9 @@
     pressedIndex = nil;
     NSString *privserver = [NSString stringWithFormat:NSLocalizedString(@"Private %@ Server", @"Seafile"), APP_NAME];
     if (IsIpad())
-        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:privserver, @"SeaCloud.cc", @"cloud.seafile.com", nil];
+        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:privserver, nil];
     else
-        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Seafile") destructiveButtonTitle:nil otherButtonTitles:privserver, @"SeaCloud.cc", @"cloud.seafile.com", nil];
+        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Seafile") destructiveButtonTitle:nil otherButtonTitles:privserver, nil];
     if (IsIpad())
         [actionSheet showFromBarButtonItem:sender animated:YES];
     else

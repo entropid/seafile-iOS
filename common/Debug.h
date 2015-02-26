@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-#define APP_NAME @"Seafile"
+#define APP_NAME @"Horizonbase"
 
-#define GROUP_NAME @"group.com.seafile.seafilePro"
-#define APP_ID @"com.seafile.seafilePro"
+#define GROUP_NAME @"group.com.seafile.Horizonbase"
+#define APP_ID @"com.seafile.Horizonbase"
 
 #define API_URL  @"/api2"
 #if DEBUG
@@ -31,7 +31,7 @@ static inline BOOL IsIpad()
 #define ios8 ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8)
 
 
-#define BAR_COLOR     [UIColor colorWithRed:240.0/256 green:128.0/256 blue:48.0/256 alpha:1.0]
-#define HEADER_COLOR     [UIColor colorWithRed:246.0/256 green:176.0/256 blue:90.0/256 alpha:1.0]
-#define SEAF_COLOR_DARK [UIColor colorWithRed:236.0/256 green:114.0/256 blue:31.0/256 alpha:1.0]
-#define SEAF_COLOR_LIGHT [UIColor colorWithRed:255.0/256 green:196.0/256 blue:115.0/256 alpha:1.0]
+#define BAR_COLOR        [UIColor colorWithRed:51.0/256 green:136.0/256 blue:238.0/256 alpha:1.0]
+#define HEADER_COLOR     [UIColor colorWithRed:118.0/256 green:192.0/256 blue:245.0/256 alpha:1.0]
+#define SEAF_COLOR_DARK  [UIColor colorWithRed:51.0/256 green:136.0/256 blue:238.0/256 alpha:1.0]
+#define SEAF_COLOR_LIGHT [UIColor colorWithRed:131/256 green:207.0/256 blue:255.0/256 alpha:1.0]

@@ -120,7 +120,8 @@
     [cancelButton setTitle:NSLocalizedString(@"Cancel", @"Seafile") forState:UIControlStateHighlighted];
 
 
-    _msgLabel.text = NSLocalizedString(@"For example: https://seacloud.cc or http://192.168.1.24:8000", @"Seafile");
+    _msgLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Private %@ Server", @"Seafile"), APP_NAME];
+    serverTextField.enabled = false;
     serverTextField.placeholder = NSLocalizedString(@"Server, like https://seafile.cc", @"Seafile");
 
     self.title = [APP_NAME stringByAppendingFormat:@" %@", NSLocalizedString(@"Account", @"Seafile")];
@@ -152,11 +153,7 @@
         else if (self.type == 2)
             serverTextField.text = @"https://cloud.seafile.com";
         else {
-#if DEBUG
-            serverTextField.text = @"https://dev.seafile.com/seahub/";
-            usernameTextField.text = @"demo@seafile.com";
-            passwordTextField.text = @"demo";
-#endif
+            serverTextField.text = @"https://ch.horizonbase.ch";
         }
     }
     usernameTextField.placeholder = NSLocalizedString(@"Email", @"Seafile");

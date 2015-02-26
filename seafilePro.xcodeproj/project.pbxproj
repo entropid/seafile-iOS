@@ -518,7 +518,7 @@
 		571B845B1A5AF10C00E92BF7 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		571B845C1A5AF14200E92BF7 /* is */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = is; path = is.lproj/Localizable.strings; sourceTree = "<group>"; };
 		571CFA9319076469002A58BF /* reply.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reply.png; sourceTree = "<group>"; };
-		571D8DBA1677881400F1A22C /* SeafilePro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SeafilePro.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		571D8DBA1677881400F1A22C /* Horizonbase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Horizonbase.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		571D8DBD1677897D00F1A22C /* seafile-appstore-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "seafile-appstore-Info.plist"; sourceTree = "<group>"; };
 		571F5147168C80380055D69B /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		57227A5B18389DB600CD28E9 /* red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = red.png; sourceTree = "<group>"; };
@@ -1761,7 +1761,7 @@
 		57DB826E15A833FA00097CEC /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				571D8DBA1677881400F1A22C /* SeafilePro.app */,
+				571D8DBA1677881400F1A22C /* Horizonbase.app */,
 				57A0295F1A16F8AC009C9D7B /* SeafProvider.appex */,
 				57A0296D1A16F8AD009C9D7B /* SeafProviderFileProvider.appex */,
 			);
@@ -1920,7 +1920,7 @@
 			);
 			name = "seafile-appstore";
 			productName = seafile;
-			productReference = 571D8DBA1677881400F1A22C /* SeafilePro.app */;
+			productReference = 571D8DBA1677881400F1A22C /* Horizonbase.app */;
 			productType = "com.apple.product-type.application";
 		};
 		57A0295E1A16F8AC009C9D7B /* SeafProvider */ = {
@@ -2690,9 +2690,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = seafile/seafile.entitlements;
 				"CODE_SIGN_ENTITLEMENTS[sdk=*]" = seafile/seafile.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: xie zheng (V5PK24Q5Y5)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: xie zheng (V5PK24Q5Y5)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "seafile/seafile-Prefix.pch";
 				HEADER_SEARCH_PATHS = "libs/ios-openssl/include/";
@@ -2702,9 +2703,9 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/libs/ios-openssl/lib\"",
 				);
-				PRODUCT_NAME = SeafilePro;
-				PROVISIONING_PROFILE = "d2380a5d-6268-427e-b53b-5951a8ab1019";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "d2380a5d-6268-427e-b53b-5951a8ab1019";
+				PRODUCT_NAME = Horizonbase;
+				PROVISIONING_PROFILE = "49bd4279-70d2-4c92-8ce0-bcc84111b0a5";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "49bd4279-70d2-4c92-8ce0-bcc84111b0a5";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
@@ -2716,6 +2717,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = seafile/seafile.entitlements;
+				"CODE_SIGN_ENTITLEMENTS[sdk=*]" = seafile/seafile.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Seafile Inc. (55LCTZ5354)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Seafile Inc. (55LCTZ5354)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2727,9 +2730,9 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/libs/ios-openssl/lib\"",
 				);
-				PRODUCT_NAME = SeafilePro;
-				PROVISIONING_PROFILE = "77ceea69-5b97-499f-a2d1-23c0190d055e";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "77ceea69-5b97-499f-a2d1-23c0190d055e";
+				PRODUCT_NAME = Horizonbase;
+				PROVISIONING_PROFILE = "49bd4279-70d2-4c92-8ce0-bcc84111b0a5";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "49bd4279-70d2-4c92-8ce0-bcc84111b0a5";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
@@ -2758,7 +2761,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "087be506-0e5c-4625-8c8d-3aebeedd55d3";
+				PROVISIONING_PROFILE = "1c49b605-b5b3-4423-8193-20ffbde2c3cb";
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -2782,8 +2785,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9e519841-17b7-4007-ac86-6894e3d962ad";
+				PROVISIONING_PROFILE = "1c49b605-b5b3-4423-8193-20ffbde2c3cb";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1c49b605-b5b3-4423-8193-20ffbde2c3cb";
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -2819,7 +2822,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "5e70e790-7f03-464d-a27b-1584effd9a9a";
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -2852,7 +2855,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "c79116a6-3a21-4eb1-8226-9b37a89d9aab";
+				PROVISIONING_PROFILE = "5e70e790-7f03-464d-a27b-1584effd9a9a";
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -2892,8 +2895,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
 				"PRIVATE_HEADERS_FOLDER_PATH[sdk=*]" = "";
-				PROVISIONING_PROFILE = "087be506-0e5c-4625-8c8d-3aebeedd55d3";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "087be506-0e5c-4625-8c8d-3aebeedd55d3";
+				PROVISIONING_PROFILE = "49bd4279-70d2-4c92-8ce0-bcc84111b0a5";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "49bd4279-70d2-4c92-8ce0-bcc84111b0a5";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2926,8 +2929,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "77ceea69-5b97-499f-a2d1-23c0190d055e";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "77ceea69-5b97-499f-a2d1-23c0190d055e";
+				PROVISIONING_PROFILE = "49bd4279-70d2-4c92-8ce0-bcc84111b0a5";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "49bd4279-70d2-4c92-8ce0-bcc84111b0a5";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
