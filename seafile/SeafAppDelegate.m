@@ -386,7 +386,11 @@
     // we are cycling the damned GlobalMailComposer... due to horrible iOS issue
     // http://stackoverflow.com/questions/25604552/i-have-real-misunderstanding-with-mfmailcomposeviewcontroller-in-swift-ios8-in/25864182#25864182
     _globalMailComposer = nil;
-    _globalMailComposer = [[MFMailComposeViewController alloc] init];
+    
+    // Do not try to initialise the Mail Composer if there is not account set up
+    if ([MFMailComposeViewController canSendMail]) {
+        _globalMailComposer = [[MFMailComposeViewController alloc] init];
+    }
 }
 
 #pragma - SeafConnectionDelegate
