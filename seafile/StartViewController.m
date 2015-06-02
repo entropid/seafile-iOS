@@ -57,7 +57,7 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
     [self setExtraCellLineHidden:self.tableView];
     self.title = NSLocalizedString(@"Accounts", @"Seafile");;
-    UIBarButtonItem *addItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Add account", @"Seafile") style:UIBarButtonItemStyleBordered target:self action:@selector(addAccount:)];
+    UIBarButtonItem *addItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Add account", @"Seafile") style:UIBarButtonItemStylePlain target:self action:@selector(addAccount:)];
     self.navigationItem.rightBarButtonItem = addItem;
 
     NSArray *views = [[NSBundle mainBundle] loadNibNamed:@"SeafStartHeaderView" owner:self options:nil];

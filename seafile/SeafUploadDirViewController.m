@@ -91,8 +91,8 @@
     if([self respondsToSelector:@selector(edgesForExtendedLayout)])
         self.edgesForExtendedLayout = UIRectEdgeNone;
     // Uncomment the following line to preserve selection between presentations.
-    self.saveItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Seafile") style:UIBarButtonItemStyleBordered target:self action:@selector(save:)];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"Seafile") style:UIBarButtonItemStyleBordered target:self action:@selector(cancel:)];
+    self.saveItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Seafile") style:UIBarButtonItemStylePlain target:self action:@selector(save:)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"Seafile") style:UIBarButtonItemStylePlain target:self action:@selector(cancel:)];
     self.navigationItem.rightBarButtonItem = self.saveItem;
     self.imageVIew.image = self.ufile.icon;
     self.nameLabel.text = self.ufile.name;

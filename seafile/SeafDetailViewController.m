@@ -218,7 +218,7 @@ enum PREVIEW_STATE {
     self.masterVc = c;
     self.photos = nil;
     self.preViewItem = item;
-    if (IsIpad() && UIInterfaceOrientationIsLandscape(self.interfaceOrientation) && !self.hideMaster && self.masterVc) {
+    if (IsIpad() && UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]) && !self.hideMaster && self.masterVc) {
         if (_preViewItem == nil)
             self.navigationItem.leftBarButtonItem = nil;
         else
@@ -239,7 +239,7 @@ enum PREVIEW_STATE {
     self.preViewItem = item;
     self.currentPageIndex = [items indexOfObject:item];
     [self.view addSubview:self.pagingScrollView];
-    if (IsIpad() && UIInterfaceOrientationIsLandscape(self.interfaceOrientation) && !self.hideMaster && self.masterVc) {
+    if (IsIpad() && UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]) && !self.hideMaster && self.masterVc) {
         if (_preViewItem == nil)
             self.navigationItem.leftBarButtonItem = nil;
         else
