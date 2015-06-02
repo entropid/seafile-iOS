@@ -38,6 +38,7 @@
 + (void)alertWithTitle:(NSString *)title message:(NSString*)message yes:(void (^)())yes no:(void (^)())no from:(UIViewController *)c;
 + (void)alertWithTitle:(NSString *)title message:(NSString*)message handler:(void (^)())handler from:(UIViewController *)c;
 + (void)popupInputView:(NSString *)title placeholder:(NSString *)tip secure:(BOOL)secure handler:(void (^)(NSString *input))handler from:(UIViewController *)c;
++ (void)popupInputView:(NSString *)title placeholder:(NSString *)tip prefilled:(BOOL)prefilled secure:(BOOL)secure handler:(void (^)(NSString *))handler from:(UIViewController *)c;
 
 + (UIImage *)reSizeImage:(UIImage *)image toSquare:(float)length;
 

@@ -111,8 +111,13 @@ ADD_DYNAMIC_PROPERTY(void (^)(NSString *),handler_input,setHandler_input);
 
 - (void)popupInputView:(NSString *)title placeholder:(NSString *)tip secure:(BOOL)secure handler:(void (^)(NSString *input))handler
 {
+    [self popupInputView:title placeholder:tip prefilled:NO secure:secure handler:handler];
+}
+
+- (void)popupInputView:(NSString *)title placeholder:(NSString *)tip prefilled:(BOOL)prefilled secure:(BOOL)secure handler:(void (^)(NSString *input))handler
+{
     if (ios8) {
-        [Utils popupInputView:title placeholder:tip secure:secure handler:handler from:self];
+        [Utils popupInputView:title placeholder:tip prefilled:prefilled secure:secure handler:handler from:self];
     } else {
         self.handler_ok = nil;
         self.handler_cancel = nil;

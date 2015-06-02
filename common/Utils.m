@@ -368,6 +368,11 @@
 
 + (void)popupInputView:(NSString *)title placeholder:(NSString *)tip secure:(BOOL)secure handler:(void (^)(NSString *input))handler from:(UIViewController *)c
 {
+    [self popupInputView:title placeholder:tip prefilled:NO secure:secure handler:handler from:c];
+}
+
++ (void)popupInputView:(NSString *)title placeholder:(NSString *)tip prefilled:(BOOL)prefilled secure:(BOOL)secure handler:(void (^)(NSString *))handler from:(UIViewController *)c
+{
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Seafile") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
     }];
@@ -380,11 +385,14 @@
         textField.placeholder = tip;
         textField.autocorrectionType = UITextAutocorrectionTypeNo;
         textField.secureTextEntry = secure;
-
+        
+        if (prefilled) {
+            textField.text = tip;
+        }
     }];
     [alert addAction:cancelAction];
     [alert addAction:okAction];
-
+    
     [c presentViewController:alert animated:true completion:nil];
 }
 

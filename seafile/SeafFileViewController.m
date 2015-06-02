@@ -664,12 +664,7 @@ enum {
 {
     if (tableView != self.tableView) return NO;
     NSObject *entry  = [self getDentrybyIndexPath:indexPath tableView:tableView];
-    return ![entry isKindOfClass:[SeafUploadFile class]];
-}
-
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewCellEditingStyleNone;
+    return ![entry isKindOfClass:[SeafUploadFile class]];*/
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath

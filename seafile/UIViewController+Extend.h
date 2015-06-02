@@ -23,6 +23,7 @@
 - (void)alertWithTitle:(NSString *)title message:(NSString*)message yes:(void (^)())yes no:(void (^)())no;
 
 - (void)popupInputView:(NSString *)title placeholder:(NSString *)tip secure:(BOOL)secure handler:(void (^)(NSString *input))handler;
+- (void)popupInputView:(NSString *)title placeholder:(NSString *)tip prefilled:(BOOL)prefilled secure:(BOOL)secure handler:(void (^)(NSString *input))handler;
 
 - (UIBarButtonItem *)getBarItem:(NSString *)imageName action:(SEL)action size:(float)size;
 
