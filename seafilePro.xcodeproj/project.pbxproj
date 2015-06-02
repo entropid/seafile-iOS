@@ -103,7 +103,7 @@
 		57535235198CD4FF000BE07B /* DACircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 57535234198CD4FF000BE07B /* DACircularProgressView.m */; };
 		57535239198D6241000BE07B /* SeafPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 57535238198D6241000BE07B /* SeafPhotoView.m */; };
 		5757DCCD1AEBCF1600BC0426 /* SeafShibbolethViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5757DCCB1AEBCF1600BC0426 /* SeafShibbolethViewController.m */; };
-		576B99071861411700A16ED6 /* EGOTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 576B98FC1861411700A16ED6 /* EGOTextView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		576B99071861411700A16ED6 /* EGOTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 576B98FC1861411700A16ED6 /* EGOTextView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc -w"; }; };
 		576B99091861411700A16ED6 /* drag-dot@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 576B98FE1861411700A16ED6 /* drag-dot@2x.png */; };
 		576B990B1861411700A16ED6 /* loupe-hi@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 576B98FF1861411700A16ED6 /* loupe-hi@2x.png */; };
 		576B990D1861411700A16ED6 /* loupe-lo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 576B99001861411700A16ED6 /* loupe-lo@2x.png */; };
@@ -262,7 +262,7 @@
 		57A95E6118369E5A009D268A /* ellipsis2.png in Resources */ = {isa = PBXBuildFile; fileRef = 57A95E5D18369E5A009D268A /* ellipsis2.png */; };
 		57ABE5FB187925B300145FE3 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 576B9918186142EC00A16ED6 /* CoreText.framework */; };
 		57ACEED91A28B1BF0053A94A /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 57ACEEC71A28B1BF0053A94A /* SVProgressHUD.bundle */; };
-		57ACEEDA1A28B1BF0053A94A /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 57ACEEC91A28B1BF0053A94A /* SVProgressHUD.m */; };
+		57ACEEDA1A28B1BF0053A94A /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 57ACEEC91A28B1BF0053A94A /* SVProgressHUD.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		57BD932C174DD86D00F7732F /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 57BD932A174DD86D00F7732F /* index.html */; };
 		57BD932F174DDA8700F7732F /* group.png in Resources */ = {isa = PBXBuildFile; fileRef = 57BD932D174DDA8700F7732F /* group.png */; };
 		57BFAAEE18BD8EA200EB1B5C /* bt-asterisk.png in Resources */ = {isa = PBXBuildFile; fileRef = 57BFAAC418BD8EA200EB1B5C /* bt-asterisk.png */; };
@@ -1597,7 +1597,7 @@
 				ORGANIZATIONNAME = Seafile;
 				TargetAttributes = {
 					571D8CA91677881400F1A22C = {
-						DevelopmentTeam = 55LCTZ5354;
+						DevelopmentTeam = Y6LR8R2J69;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -1612,11 +1612,21 @@
 					};
 					57A0295E1A16F8AC009C9D7B = {
 						CreatedOnToolsVersion = 6.1;
-						DevelopmentTeam = 55LCTZ5354;
+						DevelopmentTeam = Y6LR8R2J69;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					57A0296C1A16F8AD009C9D7B = {
 						CreatedOnToolsVersion = 6.1;
-						DevelopmentTeam = 55LCTZ5354;
+						DevelopmentTeam = Y6LR8R2J69;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -2263,7 +2273,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_ENTITLEMENTS[sdk=*]" = seafile/seafile.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: xie zheng (V5PK24Q5Y5)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "seafile/seafile-Prefix.pch";
 				HEADER_SEARCH_PATHS = "libs/ios-openssl/include/";
@@ -2274,8 +2285,8 @@
 					"\"$(SRCROOT)/libs/ios-openssl/lib\"",
 				);
 				PRODUCT_NAME = SeafilePro;
-				PROVISIONING_PROFILE = "f4764f9d-9b60-47c7-ae14-cdd4dbc62a46";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "f4764f9d-9b60-47c7-ae14-cdd4dbc62a46";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2e57dbcd-f34e-4c8e-9807-58416fe02353";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
@@ -2288,8 +2299,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Seafile Inc. (55LCTZ5354)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Seafile Inc. (55LCTZ5354)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "seafile/seafile-Prefix.pch";
 				HEADER_SEARCH_PATHS = "libs/ios-openssl/include/";
@@ -2300,8 +2311,8 @@
 					"\"$(SRCROOT)/libs/ios-openssl/lib\"",
 				);
 				PRODUCT_NAME = SeafilePro;
-				PROVISIONING_PROFILE = "77ceea69-5b97-499f-a2d1-23c0190d055e";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "77ceea69-5b97-499f-a2d1-23c0190d055e";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2e57dbcd-f34e-4c8e-9807-58416fe02353";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
@@ -2317,8 +2328,8 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CODE_SIGN_ENTITLEMENTS = SeafProviderFileProvider/SeafProviderFileProvider.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: xie zheng (V5PK24Q5Y5)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: xie zheng (V5PK24Q5Y5)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -2330,7 +2341,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "1dc2ebee-f558-4817-82a7-76c8e870390b";
+				PROVISIONING_PROFILE = "0ca8c2a7-fa97-463b-8f2d-ddb5ea1f15f2";
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -2354,8 +2365,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d699bdca-4d58-49b8-ac4b-e49bd0d2539a";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "d699bdca-4d58-49b8-ac4b-e49bd0d2539a";
+				PROVISIONING_PROFILE = "0ca8c2a7-fa97-463b-8f2d-ddb5ea1f15f2";
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -2369,8 +2379,8 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CODE_SIGN_ENTITLEMENTS = SeafProvider/SeafProvider.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: xie zheng (V5PK24Q5Y5)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: xie zheng (V5PK24Q5Y5)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -2391,8 +2401,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "ae730d54-f8bb-42c8-a317-90945f95526d";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ae730d54-f8bb-42c8-a317-90945f95526d";
+				PROVISIONING_PROFILE = "441615a2-df0b-4599-a37e-8fdfae0e1058";
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -2406,8 +2415,8 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CODE_SIGN_ENTITLEMENTS = SeafProvider/SeafProvider.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Seafile Inc. (55LCTZ5354)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Seafile Inc. (55LCTZ5354)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
@@ -2425,7 +2434,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "c79116a6-3a21-4eb1-8226-9b37a89d9aab";
+				PROVISIONING_PROFILE = "441615a2-df0b-4599-a37e-8fdfae0e1058";
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -2442,8 +2451,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: xie zheng (V5PK24Q5Y5)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: xie zheng (V5PK24Q5Y5)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Simone Basile (D9T43D49L7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Simone Basile (D9T43D49L7)";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -2466,8 +2475,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
 				"PRIVATE_HEADERS_FOLDER_PATH[sdk=*]" = "";
-				PROVISIONING_PROFILE = "f4764f9d-9b60-47c7-ae14-cdd4dbc62a46";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "f4764f9d-9b60-47c7-ae14-cdd4dbc62a46";
+				PROVISIONING_PROFILE = "2e57dbcd-f34e-4c8e-9807-58416fe02353";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2e57dbcd-f34e-4c8e-9807-58416fe02353";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2485,8 +2494,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Seafile Inc. (55LCTZ5354)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Seafile Inc. (55LCTZ5354)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Simone Basile (D9T43D49L7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Simone Basile (D9T43D49L7)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -2501,8 +2510,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "77ceea69-5b97-499f-a2d1-23c0190d055e";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "77ceea69-5b97-499f-a2d1-23c0190d055e";
+				PROVISIONING_PROFILE = "2e57dbcd-f34e-4c8e-9807-58416fe02353";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2e57dbcd-f34e-4c8e-9807-58416fe02353";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
