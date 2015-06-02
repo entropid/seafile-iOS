@@ -139,17 +139,7 @@
 
     [Utils checkMakeDir:SeafGlobal.sharedObject.tempDir];
 
-    if (ios8) {
-        [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
-        [[UIApplication sharedApplication] registerForRemoteNotifications];
-    } else
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeSound];
-
-    NSDictionary *dict = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
-    if (dict) {
-        [self application:application didReceiveRemoteNotification:dict];
-    } else
-        [self.startVC selectDefaultAccount];
+    [self.startVC selectDefaultAccount];
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
 
     self.bgTask = UIBackgroundTaskInvalid;
@@ -184,38 +174,6 @@
     self.bgTask = [app beginBackgroundTaskWithExpirationHandler:self.expirationHandler];
 }
 
-- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
-{
-    Debug("token=%@, %ld\n", deviceToken, (unsigned long)deviceToken.length);
-    _deviceToken = deviceToken;
-    if (self.deviceToken)
-        [SeafGlobal.sharedObject.connection registerDevice:self.deviceToken];
-}
-- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
-{
-    Debug("error=%@", error);
-}
-
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
-{
-    NSString *status = [NSString stringWithFormat:@"Notification received:\n%@",[userInfo description]];
-    NSString *badgeStr = [[userInfo objectForKey:@"aps"] objectForKey:@"badge"];
-    NSDictionary *alert = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
-    NSArray *args = [alert objectForKey:@"loc-args"];
-    Debug("status=%@, badge=%@", status, badgeStr);
-    if ([args isKindOfClass:[NSArray class]] && args.count == 2) {
-        NSString *username = [args objectAtIndex:0];
-        NSString *server = [args objectAtIndex:1];
-        if (badgeStr && [badgeStr intValue] > 0) {
-            SeafConnection *connection = [[SeafGlobal sharedObject] getConnection:server username:username];
-            if (!connection) return;
-            self.window.rootViewController = self.startNav;
-            [self.window makeKeyAndVisible];
-            [self.startVC selectAccount:connection];
-        }
-    }
-}
-
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -241,7 +199,6 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    [application cancelAllLocalNotifications];
     self.background = false;
     for (id <SeafBackgroundMonitor> monitor in _monitors) {
         [monitor enterForeground];
