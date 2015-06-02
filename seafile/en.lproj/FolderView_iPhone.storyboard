@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="IwU-Z8-46U">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="IwU-Z8-46U">
     <dependencies>
         <deployment version="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Tab Bar Controller-->
@@ -210,8 +211,12 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <switch opaque="NO" tag="100" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JZc-TU-fcn">
-                                                    <rect key="frame" x="258" y="6" width="51" height="31"/>
+                                                <switch opaque="NO" tag="100" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JZc-TU-fcn">
+                                                    <rect key="frame" x="261" y="6" width="51" height="31"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="31" id="LbF-o8-EYm"/>
+                                                        <constraint firstAttribute="width" constant="49" id="q0s-s9-Ozz"/>
+                                                    </constraints>
                                                 </switch>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Auto Camera Upload" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1af-Tn-HYe">
                                                     <rect key="frame" x="17" y="11" width="185" height="21"/>
@@ -219,6 +224,10 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="JZc-TU-fcn" secondAttribute="trailing" constant="2" id="8qV-Kn-9vn"/>
+                                                <constraint firstAttribute="centerY" secondItem="JZc-TU-fcn" secondAttribute="centerY" id="RdB-l2-ZG2"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="03k-Un-4sU">
@@ -228,8 +237,12 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <switch opaque="NO" tag="100" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fFZ-gz-Sso">
-                                                    <rect key="frame" x="258" y="6" width="51" height="31"/>
+                                                <switch opaque="NO" tag="100" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fFZ-gz-Sso">
+                                                    <rect key="frame" x="261" y="6" width="51" height="31"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="49" id="Lkm-Is-1VQ"/>
+                                                        <constraint firstAttribute="height" constant="31" id="hNL-G6-5tf"/>
+                                                    </constraints>
                                                 </switch>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Upload Videos" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kcw-kJ-pcF">
                                                     <rect key="frame" x="17" y="11" width="185" height="21"/>
@@ -237,6 +250,10 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="fFZ-gz-Sso" secondAttribute="trailing" constant="2" id="CMx-ks-rxG"/>
+                                                <constraint firstAttribute="centerY" secondItem="fFZ-gz-Sso" secondAttribute="centerY" id="uZp-u6-GpO"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="46K-Xc-8ve">
@@ -246,8 +263,12 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <switch opaque="NO" tag="100" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EII-rv-WS4">
-                                                    <rect key="frame" x="258" y="6" width="51" height="31"/>
+                                                <switch opaque="NO" tag="100" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EII-rv-WS4">
+                                                    <rect key="frame" x="261" y="6" width="51" height="31"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="31" id="ZJC-Tg-7gf"/>
+                                                        <constraint firstAttribute="width" constant="49" id="iss-Oi-AsX"/>
+                                                    </constraints>
                                                 </switch>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Wifi Only" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5rP-cB-Wm0">
                                                     <rect key="frame" x="17" y="11" width="185" height="21"/>
@@ -255,6 +276,10 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="EII-rv-WS4" secondAttribute="trailing" constant="2" id="DdM-sr-aGU"/>
+                                                <constraint firstAttribute="centerY" secondItem="EII-rv-WS4" secondAttribute="centerY" id="Off-CN-3oG"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="nQJ-Pj-FuA" detailTextLabel="YZ4-lx-5st" style="IBUITableViewCellStyleValue1" id="c9x-M1-SOm">
@@ -413,13 +438,21 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Wipe Cache" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ntG-cs-ded">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wipe Cache" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ntG-cs-ded">
                                                     <rect key="frame" x="110" y="2" width="104" height="41"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="104" id="DL7-jF-pvF"/>
+                                                        <constraint firstAttribute="height" constant="41" id="Vt9-Js-Wah"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="ntG-cs-ded" firstAttribute="top" secondItem="cPA-cT-uky" secondAttribute="topMargin" constant="-6" id="DQR-L0-KrK"/>
+                                                <constraint firstAttribute="centerX" secondItem="ntG-cs-ded" secondAttribute="centerX" constant="-2" id="Ml6-hx-cM2"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     </tableViewCell>
