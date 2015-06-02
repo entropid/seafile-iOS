@@ -736,7 +736,7 @@ enum {
 - (void)popupRenameView:(NSString *)newName
 {
     self.state = STATE_RENAME;
-    [self popupInputView:S_RENAME placeholder:newName secure:false handler:^(NSString *input) {
+    [self popupInputView:S_RENAME placeholder:newName prefilled:YES secure:false handler:^(NSString *input) {
         if (!input || input.length == 0) {
             [self alertWithTitle:NSLocalizedString(@"File name must not be empty", @"Seafile")];
             return;
