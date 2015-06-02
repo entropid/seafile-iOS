@@ -378,6 +378,7 @@
 		57F8CD2D1A127566000F6CDC /* SeafTextEditorViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57E22B0B1A12625B00C92330 /* SeafTextEditorViewController_iPhone.xib */; };
 		57F8CD2E1A127566000F6CDC /* SeafUploadDirViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57E22B0D1A12625C00C92330 /* SeafUploadDirViewController.xib */; };
 		57F8CD2F1A127566000F6CDC /* SeafUploadingFileCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57E22B0F1A12625C00C92330 /* SeafUploadingFileCell.xib */; };
+		85E80E141B1BBB2A00DCF79D /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85E80E131B1BBB2A00DCF79D /* LocalAuthentication.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -817,6 +818,7 @@
 		57F8CD1E1A127544000F6CDC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SeafTextEditorViewController_iPhone.xib; sourceTree = "<group>"; };
 		57F8CD1F1A127549000F6CDC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SeafUploadDirViewController.xib; sourceTree = "<group>"; };
 		57F8CD201A12754E000F6CDC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SeafUploadingFileCell.xib; sourceTree = "<group>"; };
+		85E80E131B1BBB2A00DCF79D /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		E4F46F57187B44B200B80C36 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -825,6 +827,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85E80E141B1BBB2A00DCF79D /* LocalAuthentication.framework in Frameworks */,
 				57814AF81AA8B55000D1D5D8 /* Photos.framework in Frameworks */,
 				57ABE5FB187925B300145FE3 /* CoreText.framework in Frameworks */,
 				5725186217AE7D010078CD12 /* Security.framework in Frameworks */,
@@ -1397,6 +1400,7 @@
 		57DB827015A833FA00097CEC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				85E80E131B1BBB2A00DCF79D /* LocalAuthentication.framework */,
 				57814AF71AA8B55000D1D5D8 /* Photos.framework */,
 				57F0AAFC16D8913600364D18 /* AssetsLibrary.framework */,
 				57DB827715A833FA00097CEC /* CoreData.framework */,

@@ -30,6 +30,9 @@
 @property (strong, nonatomic) dispatch_block_t expirationHandler;
 @property BOOL background;
 @property (strong) NSMutableArray *monitors;
+
+@property (strong) UIImageView *lockScreen;
+
 @end
 
 @implementation SeafAppDelegate
@@ -128,6 +131,10 @@
     _monitors = [[NSMutableArray alloc] init];
     _startNav = (UINavigationController *)self.window.rootViewController;
     _startVC = (StartViewController *)_startNav.topViewController;
+    
+    if ([[SeafGlobal.sharedObject objectForKey:@"_touchID"] booleanValue:NO]) {
+        [self challengeAuthentication];
+    }
 
     [Utils checkMakeDir:[[SeafGlobal.sharedObject applicationDocumentsDirectory] stringByAppendingPathComponent:OBJECTS_DIR]];
     [Utils checkMakeDir:[[SeafGlobal.sharedObject applicationDocumentsDirectory] stringByAppendingPathComponent:AVATARS_DIR]];
@@ -178,6 +185,10 @@
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    
+    if ([[SeafGlobal.sharedObject objectForKey:@"_touchID"] booleanValue:NO]) {
+        [self addLockScreen];
+    }
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -194,6 +205,10 @@
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     [SeafGlobal.sharedObject loadSettings:[NSUserDefaults standardUserDefaults]];
     [self checkPhotoChanges:nil];
+    
+    if ([[SeafGlobal.sharedObject objectForKey:@"_touchID"] booleanValue:NO]) {
+        [self challengeAuthentication];
+    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -212,6 +227,93 @@
     [[SeafGlobal sharedObject] saveContext];
 }
 
+- (void)addLockScreen
+{
+    if (self.lockScreen.superview == nil) {
+        if (!self.lockScreen) {
+            self.lockScreen = [[UIImageView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+            
+            NSString *lockScreenImage;
+            
+            // iPad
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                // Portrait
+                if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation)) {
+                    if ([UIScreen mainScreen].scale == 2.0) {
+                        lockScreenImage = @"LaunchImage-700-Portrait@2x~ipad";
+                    }
+                    else {
+                        lockScreenImage = @"LaunchImage-700-Portrait~ipad";
+                    }
+                }
+                // Landscape
+                else {
+                    if ([UIScreen mainScreen].scale == 2.0) {
+                        lockScreenImage = @"LaunchImage-700-Landscape@2x~ipad";
+                    }
+                    else {
+                        lockScreenImage = @"LaunchImage-700-Landscape~ipad";
+                    }
+                }
+            }
+            // iPhone
+            else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+                // iPhone 4/4S, 3.5"
+                if (fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )480 ) < DBL_EPSILON) {
+                    lockScreenImage = @"LaunchImage-700@2x";
+                }
+                // iPhone 5/5S, 4"
+                else if (fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON) {
+                    lockScreenImage = @"LaunchImage-568h@2x";
+                }
+                // iPhone 6, 4.7"
+                else if (fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )667 ) < DBL_EPSILON) {
+                    lockScreenImage = @"LaunchImage-800-667h";
+                }
+                // iPhone 6 Plus, 5.5"
+                else if (fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )736 ) < DBL_EPSILON) {
+                    lockScreenImage = @"LaunchImage-800-Portrait-736h";
+                }
+            }
+            
+            self.lockScreen.image = [UIImage imageNamed:lockScreenImage];
+            self.lockScreen.backgroundColor = [UIColor whiteColor];
+            self.lockScreen.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleWidth;
+            self.lockScreen.userInteractionEnabled = NO;
+        }
+        
+        self.lockScreen.frame = [UIScreen mainScreen].bounds;
+        [[UIApplication sharedApplication].keyWindow.subviews.lastObject addSubview:self.lockScreen];
+        
+        // Block touches to the view underneath
+        [[UIApplication sharedApplication].keyWindow.subviews.lastObject setUserInteractionEnabled:NO];
+    }
+}
+
+- (void)challengeAuthentication
+{
+    [self addLockScreen];
+    LAContext *context = [[LAContext alloc] init];
+    NSError *error = nil;
+    
+    if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
+        [context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics localizedReason:@"Unlock Seafile" reply:^(BOOL success, NSError *error) {
+            if (!error && success) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [UIView animateWithDuration:0.25f animations:^{
+                        CGRect newFrame = (CGRect){0, self.lockScreen.frame.size.height, self.lockScreen.frame.size};
+                        self.lockScreen.frame = newFrame;
+                    } completion:^(BOOL finished) {
+                        [self.lockScreen removeFromSuperview];
+                        
+                        // Re-enable the touches
+                        [[UIApplication sharedApplication].keyWindow.subviews.lastObject setUserInteractionEnabled:YES];
+                    }];
+                });
+            }
+        }];
+    }
+}
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
 {

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <LocalAuthentication/LocalAuthentication.h>
 
 #import "SeafConnection.h"
 

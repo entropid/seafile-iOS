@@ -46,10 +46,12 @@ enum {
 @property (strong, nonatomic) IBOutlet UILabel *autoCameraUploadLabel;
 @property (strong, nonatomic) IBOutlet UILabel *wifiOnlyLabel;
 @property (strong, nonatomic) IBOutlet UILabel *videoSyncLabel;
+@property (strong, nonatomic) IBOutlet UILabel *touchIDLabel;
 
 @property (strong, nonatomic) IBOutlet UISwitch *autoSyncSwitch;
 @property (strong, nonatomic) IBOutlet UISwitch *wifiOnlySwitch;
 @property (strong, nonatomic) IBOutlet UISwitch *videoSyncSwitch;
+@property (strong, nonatomic) IBOutlet UISwitch *touchIDSwitch;
 @property BOOL autoSync;
 @property BOOL wifiOnly;
 @property BOOL videoSync;
@@ -114,6 +116,12 @@ enum {
     [_connection checkAutoSync];
 }
 
+- (void)touchIDSwitchFlip:(id)sender
+{
+    [SeafGlobal.sharedObject setObject:@(_touchIDSwitch.on) forKey:@"_touchID"];
+    [SeafGlobal.sharedObject synchronize];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -122,6 +130,7 @@ enum {
     _autoCameraUploadLabel.text = NSLocalizedString(@"Auto Camera Upload", @"Seafile");
     _videoSyncLabel.text = NSLocalizedString(@"Upload Videos", @"Seafile");
     _wifiOnlyLabel.text = NSLocalizedString(@"Wifi Only", @"Seafile");
+    _touchIDLabel.text = NSLocalizedString(@"Enable Touch ID", @"Seafile");
     _syncRepoCell.textLabel.text = NSLocalizedString(@"Upload Destination", @"Seafile");
     _cacheCell.textLabel.text = NSLocalizedString(@"Local Cache", @"Seafile");
     _tellFriendCell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Tell Friends about %@", @"Seafile"), APP_NAME];
@@ -136,6 +145,20 @@ enum {
     [_autoSyncSwitch addTarget:self action:@selector(autoSyncSwitchFlip:) forControlEvents:UIControlEventValueChanged];
     [_wifiOnlySwitch addTarget:self action:@selector(wifiOnlySwitchFlip:) forControlEvents:UIControlEventValueChanged];
     [_videoSyncSwitch addTarget:self action:@selector(videoSyncSwitchFlip:) forControlEvents:UIControlEventValueChanged];
+    [_touchIDSwitch addTarget:self action:@selector(touchIDSwitchFlip:) forControlEvents:UIControlEventValueChanged];
+    
+    // Check if Touch ID is available
+    LAContext *context = [[LAContext alloc] init];
+    NSError *error = nil;
+    
+    // Disable Touch ID switch if not available
+    if (![context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
+        _touchIDSwitch.enabled = NO;
+    }
+    
+    if ([[SeafGlobal.sharedObject objectForKey:@"_touchID"] booleanValue:NO]) {
+        _touchIDSwitch.on = YES;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
