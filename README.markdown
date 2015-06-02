@@ -18,15 +18,17 @@ Follow these steps :
 Then you can run seafile in xcode simulator.
 
 
-Internationalization (I18n)
+Improvements
 ==========
 
-Please submit translations via Transifex: [https://www.transifex.com/projects/p/seafile-ios/](https://www.transifex.com/projects/p/seafile-ios/)
+This fork implemented a series of improvements on the original version.
 
-Steps:
+1. Support for iPhone 6 (and iPhone 6 Plus, but some @3x assets are missing)
 
-1. Create a free account on Transifex ([https://www.transifex.com/](https://www.transifex.com/)).
+2. Support for Touch ID authentication
 
-2. Send a request to join the language translation.
+3. Swipe actions for files/folders 
 
-3. After accepted by the project maintainer, then you can upload your file or translate online.
+4. Search bar removed (it doesn't work unless you have a license for the Pro version)
+
+5. More to come…
