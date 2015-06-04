@@ -378,6 +378,8 @@
 		57F8CD2D1A127566000F6CDC /* SeafTextEditorViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57E22B0B1A12625B00C92330 /* SeafTextEditorViewController_iPhone.xib */; };
 		57F8CD2E1A127566000F6CDC /* SeafUploadDirViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57E22B0D1A12625C00C92330 /* SeafUploadDirViewController.xib */; };
 		57F8CD2F1A127566000F6CDC /* SeafUploadingFileCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57E22B0F1A12625C00C92330 /* SeafUploadingFileCell.xib */; };
+		853F1B2E1B2115140073C9F5 /* MGSwipeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 853F1B2B1B2115140073C9F5 /* MGSwipeButton.m */; };
+		853F1B2F1B2115140073C9F5 /* MGSwipeTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 853F1B2D1B2115140073C9F5 /* MGSwipeTableCell.m */; };
 		85E80E141B1BBB2A00DCF79D /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85E80E131B1BBB2A00DCF79D /* LocalAuthentication.framework */; };
 /* End PBXBuildFile section */
 
@@ -818,6 +820,10 @@
 		57F8CD1E1A127544000F6CDC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SeafTextEditorViewController_iPhone.xib; sourceTree = "<group>"; };
 		57F8CD1F1A127549000F6CDC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SeafUploadDirViewController.xib; sourceTree = "<group>"; };
 		57F8CD201A12754E000F6CDC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SeafUploadingFileCell.xib; sourceTree = "<group>"; };
+		853F1B2A1B2115140073C9F5 /* MGSwipeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSwipeButton.h; sourceTree = "<group>"; };
+		853F1B2B1B2115140073C9F5 /* MGSwipeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSwipeButton.m; sourceTree = "<group>"; };
+		853F1B2C1B2115140073C9F5 /* MGSwipeTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSwipeTableCell.h; sourceTree = "<group>"; };
+		853F1B2D1B2115140073C9F5 /* MGSwipeTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSwipeTableCell.m; sourceTree = "<group>"; };
 		85E80E131B1BBB2A00DCF79D /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		E4F46F57187B44B200B80C36 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -998,6 +1004,7 @@
 		57094B5515B9AC4A00F48C08 /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				853F1B291B2115140073C9F5 /* MGSwipeTableCell */,
 				57ACEEB01A28B1BE0053A94A /* SVProgressHUD */,
 				57E228461A0E286100C92330 /* QBImagePickerController */,
 				576B98FA1861411700A16ED6 /* EGOTextView */,
@@ -1532,6 +1539,18 @@
 			name = utils;
 			sourceTree = "<group>";
 		};
+		853F1B291B2115140073C9F5 /* MGSwipeTableCell */ = {
+			isa = PBXGroup;
+			children = (
+				853F1B2A1B2115140073C9F5 /* MGSwipeButton.h */,
+				853F1B2B1B2115140073C9F5 /* MGSwipeButton.m */,
+				853F1B2C1B2115140073C9F5 /* MGSwipeTableCell.h */,
+				853F1B2D1B2115140073C9F5 /* MGSwipeTableCell.m */,
+			);
+			name = MGSwipeTableCell;
+			path = MGSwipeTableCell/MGSwipeTableCell;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1930,6 +1949,7 @@
 				57E2288A1A0E286200C92330 /* QBAssetsCollectionOverlayView.m in Sources */,
 				571D8CAD1677881400F1A22C /* SeafFileViewController.m in Sources */,
 				57E229A91A11087500C92330 /* SeafConnection.m in Sources */,
+				853F1B2E1B2115140073C9F5 /* MGSwipeButton.m in Sources */,
 				5732065C18EB16F4003250DE /* AFNetworkActivityIndicatorManager.m in Sources */,
 				571D8CB01677881400F1A22C /* AFHTTPRequestOperation.m in Sources */,
 				571D8CB61677881400F1A22C /* AFURLConnectionOperation.m in Sources */,
@@ -1989,6 +2009,7 @@
 				57E229B51A11087500C92330 /* seafile.xcdatamodeld in Sources */,
 				5732064418EB11CA003250DE /* AFHTTPSessionManager.m in Sources */,
 				57E229E71A1108B200C92330 /* NSData+Encryption.m in Sources */,
+				853F1B2F1B2115140073C9F5 /* MGSwipeTableCell.m in Sources */,
 				57ACEEDA1A28B1BF0053A94A /* SVProgressHUD.m in Sources */,
 				57535231198CD4E0000BE07B /* MWTapDetectingView.m in Sources */,
 				5732066318EB16F4003250DE /* UIWebView+AFNetworking.m in Sources */,
