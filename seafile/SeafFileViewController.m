@@ -102,7 +102,13 @@ enum {
 
         fixedSpaceItem.width = 38.0f;;
         for (i = 1; i < itemsTitles.count + 1; ++i) {
-            items[i] = [[UIBarButtonItem alloc] initWithTitle:[itemsTitles objectAtIndex:i-1] style:UIBarButtonItemStylePlain target:self action:@selector(editOperation:)];
+            UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:[itemsTitles objectAtIndex:i-1] style:UIBarButtonItemStylePlain target:self action:@selector(editOperation:)];
+            
+            if ([itemsTitles objectAtIndex:i-1] == S_DELETE) {
+                [button setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor redColor]} forState:UIControlStateNormal];
+            }
+            
+            items[i] = button;
             items[i].tag = i;
         }
 
