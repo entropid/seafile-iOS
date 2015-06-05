@@ -459,90 +459,18 @@ enum {
     [self presentViewController:alert animated:true completion:nil];
 }
 
-- (void)showEditFileMenu:(UILongPressGestureRecognizer *)gestureRecognizer
-{
-    if (self.tableView.editing == YES)
-        return;
-    UIActionSheet *actionSheet;
-    if (gestureRecognizer.state != UIGestureRecognizerStateBegan)
-        return;
-
-    CGPoint touchPoint = [gestureRecognizer locationInView:self.tableView];
-    _selectedindex = [self.tableView indexPathForRowAtPoint:touchPoint];
-    if (!_selectedindex)
-        return;
-    SeafFile *file = (SeafFile *)[self getDentrybyIndexPath:_selectedindex tableView:self.tableView];
-
-    if (![file isKindOfClass:[SeafFile class]])
-        return;
-
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_selectedindex];
-    if (ios8) {
-        [self showAlertWithAction:[NSArray arrayWithObjects:S_DELETE, S_REDOWNLOAD, S_RENAME, S_SHARE_EMAIL, S_SHARE_LINK, nil] fromRect:cell.frame];
-    } else {
-        NSString *cancelTitle = IsIpad() ? nil : NSLocalizedString(@"Cancel", @"Seafile");
-        if (file.mpath)
-            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:cancelTitle destructiveButtonTitle:nil otherButtonTitles:S_DELETE, S_REDOWNLOAD, S_UPLOAD, S_SHARE_EMAIL, S_SHARE_LINK, nil];
-        else
-            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:cancelTitle destructiveButtonTitle:nil otherButtonTitles:S_DELETE, S_REDOWNLOAD, S_RENAME, S_SHARE_EMAIL, S_SHARE_LINK, nil];
-        [actionSheet showFromRect:cell.frame inView:self.tableView animated:YES];
-    }
-}
-
-- (void)showEditDirMenu:(UILongPressGestureRecognizer *)gestureRecognizer
-{
-    if (self.tableView.editing == YES)
-        return;
-    if (gestureRecognizer.state != UIGestureRecognizerStateBegan)
-        return;
-    CGPoint touchPoint = [gestureRecognizer locationInView:self.tableView];
-    _selectedindex = [self.tableView indexPathForRowAtPoint:touchPoint];
-    if (!_selectedindex)
-        return;
-    SeafDir *dir = (SeafDir *)[self getDentrybyIndexPath:_selectedindex tableView:self.tableView];
-    if (![dir isKindOfClass:[SeafDir class]])
-          return;
-
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_selectedindex];
-    if (ios8) {
-        [self showAlertWithAction:[NSArray arrayWithObjects:S_DELETE, S_RENAME, S_SHARE_EMAIL, S_SHARE_LINK, nil] fromRect:cell.frame];
-    } else {
-        NSString *cancelTitle = IsIpad() ? nil : NSLocalizedString(@"Cancel", @"Seafile");
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:cancelTitle destructiveButtonTitle:nil otherButtonTitles:S_DELETE, S_RENAME, S_SHARE_EMAIL, S_SHARE_LINK, nil];
-        [actionSheet showFromRect:cell.frame inView:self.tableView animated:YES];
-    }
-}
-
-- (void)showEditUploadFileMenu:(UILongPressGestureRecognizer *)gestureRecognizer
-{
-    if (self.tableView.editing || gestureRecognizer.state != UIGestureRecognizerStateBegan)
-        return;
-    CGPoint touchPoint = [gestureRecognizer locationInView:self.tableView];
-    _selectedindex = [self.tableView indexPathForRowAtPoint:touchPoint];
-    if (!_selectedindex)
-        return;
-    SeafUploadFile *file = (SeafUploadFile *)[self getDentrybyIndexPath:_selectedindex tableView:self.tableView];
-    if(![file isKindOfClass:[SeafUploadFile class]])
-        return;
-
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_selectedindex];
-    if (ios8) {
-        [self showAlertWithAction:[NSArray arrayWithObjects:S_DELETE, nil] fromRect:cell.frame];
-    } else {
-        NSString *cancelTitle = IsIpad() ? nil : NSLocalizedString(@"Cancel", @"Seafile");
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:cancelTitle destructiveButtonTitle:nil otherButtonTitles:S_DELETE, nil];
-        [actionSheet showFromRect:cell.frame inView:self.tableView animated:YES];
-    }
-}
-
 - (UITableViewCell *)getSeafUploadFileCell:(SeafUploadFile *)file forTableView:(UITableView *)tableView
 {
     file.delegate = self;
-    UITableViewCell *c;
+    MGSwipeTableCell *c;
     if (file.uploading) {
         SeafUploadingFileCell *cell = (SeafUploadingFileCell *)[self getCell:@"SeafUploadingFileCell" forTableView:tableView];
         cell.nameLabel.text = file.name;
         cell.imageView.image = file.icon;
+        
+        cell.leftButtons = [self buttonsForUploadFileCell];
+        cell.leftSwipeSettings.transition = MGSwipeTransitionStatic;
+        
         [cell.progressView setProgress:file.uProgress * 1.0/100];
         c = cell;
     } else {
@@ -550,6 +478,9 @@ enum {
         cell.textLabel.text = file.name;
         cell.imageView.image = file.icon;
         cell.badgeLabel.text = nil;
+        
+        cell.leftButtons = [self buttonsForFileCell];
+        cell.leftSwipeSettings.transition = MGSwipeTransitionStatic;
 
         NSString *sizeStr = [FileSizeFormatter stringFromNumber:[NSNumber numberWithLongLong:file.filesize ] useBaseTen:NO];
         NSDictionary *dict = [file uploadAttr];
@@ -567,10 +498,7 @@ enum {
         }
         c = cell;
     }
-    if (tableView == self.tableView) {
-        UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(showEditUploadFileMenu:)];
-        [c addGestureRecognizer:longPressGesture];
-    }
+    
     return c;
 }
 
@@ -581,10 +509,10 @@ enum {
     cell.detailTextLabel.text = sfile.detailText;
     cell.imageView.image = sfile.icon;
     cell.badgeLabel.text = nil;
-    if (tableView == self.tableView) {
-        UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(showEditFileMenu:)];
-        [cell addGestureRecognizer:longPressGesture];
-    }
+    
+    cell.leftButtons = [self buttonsForFileCell];
+    cell.leftSwipeSettings.transition = MGSwipeTransitionStatic;
+    
     sfile.delegate = self;
     sfile.udelegate = self;
     return cell;
@@ -596,11 +524,11 @@ enum {
     cell.textLabel.text = sdir.name;
     cell.detailTextLabel.text = nil;
     cell.imageView.image = sdir.icon;
+    
+    cell.leftButtons = [self buttonsForDirCell];
+    cell.leftSwipeSettings.transition = MGSwipeTransitionStatic;
+    
     sdir.delegate = self;
-    if (tableView == self.tableView) {
-        UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(showEditDirMenu:)];
-        [cell addGestureRecognizer:longPressGesture];
-    }
     return cell;
 }
 
@@ -614,6 +542,112 @@ enum {
     cell.badgeLabel.text = nil;
     srepo.delegate = self;
     return cell;
+}
+
+- (NSArray *)buttonsForUploadFileCell
+{
+    MGSwipeButton *deleteAction = [MGSwipeButton buttonWithTitle:@"" icon:[UIImage imageNamed:@"action-delete"] backgroundColor:[UIColor groupTableViewBackgroundColor] callback:^BOOL(MGSwipeTableCell *sender) {
+        SeafBase *entry = (SeafBase *)[self getDentrybyIndexPath:[self.tableView indexPathForCell:sender] tableView:self.tableView];
+        
+        if (self.detailViewController.preViewItem == entry)
+            self.detailViewController.preViewItem = nil;
+        
+        [self.directory removeUploadFile:(SeafUploadFile *)entry];
+        [self.tableView reloadData];
+        
+        return YES;
+    }];
+    
+    return @[deleteAction];
+}
+
+- (NSArray *)buttonsForFileCell
+{
+    MGSwipeButton *deleteAction = [MGSwipeButton buttonWithTitle:@"" icon:[UIImage imageNamed:@"action-delete"] backgroundColor:[UIColor groupTableViewBackgroundColor] callback:^BOOL(MGSwipeTableCell *sender) {
+        _selectedindex = [self.tableView indexPathForCell:sender];
+        SeafFile *file = (SeafFile *)[self getDentrybyIndexPath:[self.tableView indexPathForCell:sender] tableView:self.tableView];
+        [self deleteFile:file];
+        
+        return YES;
+    }];
+    
+    MGSwipeButton *renameAction = [MGSwipeButton buttonWithTitle:@"" icon:[UIImage imageNamed:@"action-rename"] backgroundColor:[UIColor groupTableViewBackgroundColor] callback:^BOOL(MGSwipeTableCell *sender) {
+        SeafFile *file = (SeafFile *)[self getDentrybyIndexPath:[self.tableView indexPathForCell:sender] tableView:self.tableView];
+        [self renameFile:file];
+        
+        return YES;
+    }];
+    
+    MGSwipeButton *moveAction = [MGSwipeButton buttonWithTitle:@"" icon:[UIImage imageNamed:@"action-move"] backgroundColor:[UIColor groupTableViewBackgroundColor] callback:^BOOL(MGSwipeTableCell *sender) {
+        _selectedindex = [self.tableView indexPathForCell:sender];
+        [self popupDirChooseView:nil];
+        
+        return YES;
+    }];
+    
+    MGSwipeButton *downloadAction = [MGSwipeButton buttonWithTitle:@"" icon:[UIImage imageNamed:@"action-download"] backgroundColor:[UIColor groupTableViewBackgroundColor] callback:^BOOL(MGSwipeTableCell *sender) {
+        SeafFile *file = (SeafFile *)[self getDentrybyIndexPath:[self.tableView indexPathForCell:sender] tableView:self.tableView];
+        [self redownloadFile:file];
+        
+        return YES;
+    }];
+    
+    MGSwipeButton *shareAction = [MGSwipeButton buttonWithTitle:@"" icon:[UIImage imageNamed:@"action-share"] backgroundColor:[UIColor groupTableViewBackgroundColor] callback:^BOOL(MGSwipeTableCell *sender) {
+        _selectedindex = [self.tableView indexPathForCell:sender];
+        SeafBase *entry = (SeafBase *)[self getDentrybyIndexPath:_selectedindex tableView:self.tableView];
+        
+        if (!entry.shareLink) {
+            [SVProgressHUD showWithStatus:NSLocalizedString(@"Generate share link ...", @"Seafile")];
+            [entry generateShareLink:self];
+        } else {
+            [self generateSharelink:entry WithResult:YES];
+        }
+        
+        return YES;
+    }];
+    
+    return @[deleteAction, renameAction, moveAction, downloadAction, shareAction];
+}
+
+- (NSArray *)buttonsForDirCell
+{
+    MGSwipeButton *deleteAction = [MGSwipeButton buttonWithTitle:@"" icon:[UIImage imageNamed:@"action-delete"] backgroundColor:[UIColor groupTableViewBackgroundColor] callback:^BOOL(MGSwipeTableCell *sender) {
+        _selectedindex = [self.tableView indexPathForCell:sender];
+        SeafDir *dir = (SeafDir *)[self getDentrybyIndexPath:[self.tableView indexPathForCell:sender] tableView:self.tableView];
+        [self deleteDir:dir];
+        
+        return YES;
+    }];
+    
+    MGSwipeButton *renameAction = [MGSwipeButton buttonWithTitle:@"" icon:[UIImage imageNamed:@"action-rename"] backgroundColor:[UIColor groupTableViewBackgroundColor] callback:^BOOL(MGSwipeTableCell *sender) {
+        SeafFile *file = (SeafFile *)[self getDentrybyIndexPath:[self.tableView indexPathForCell:sender] tableView:self.tableView];
+        [self renameFile:file];
+        
+        return YES;
+    }];
+    
+    MGSwipeButton *moveAction = [MGSwipeButton buttonWithTitle:@"" icon:[UIImage imageNamed:@"action-move"] backgroundColor:[UIColor groupTableViewBackgroundColor] callback:^BOOL(MGSwipeTableCell *sender) {
+        _selectedindex = [self.tableView indexPathForCell:sender];
+        [self popupDirChooseView:nil];
+        
+        return YES;
+    }];
+    
+    MGSwipeButton *shareAction = [MGSwipeButton buttonWithTitle:@"" icon:[UIImage imageNamed:@"action-share"] backgroundColor:[UIColor groupTableViewBackgroundColor] callback:^BOOL(MGSwipeTableCell *sender) {
+        _selectedindex = [self.tableView indexPathForCell:sender];
+        SeafBase *entry = (SeafBase *)[self getDentrybyIndexPath:_selectedindex tableView:self.tableView];
+        
+        if (!entry.shareLink) {
+            [SVProgressHUD showWithStatus:NSLocalizedString(@"Generate share link ...", @"Seafile")];
+            [entry generateShareLink:self];
+        } else {
+            [self generateSharelink:entry WithResult:YES];
+        }
+        
+        return YES;
+    }];
+    
+    return @[deleteAction, renameAction, moveAction, shareAction];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1058,45 +1092,10 @@ enum {
         [self popupMkdirView];
     } else if ([S_EDIT isEqualToString:title]) {
         [self editStart:nil];
-    } else if ([S_DELETE isEqualToString:title]) {
-        SeafBase *entry = (SeafBase *)[self getDentrybyIndexPath:_selectedindex tableView:self.tableView];
-        if ([entry isKindOfClass:[SeafUploadFile class]]) {
-            if (self.detailViewController.preViewItem == entry)
-                self.detailViewController.preViewItem = nil;
-            [self.directory removeUploadFile:(SeafUploadFile *)entry];
-            [self.tableView reloadData];
-        } else if ([entry isKindOfClass:[SeafFile class]])
-            [self deleteFile:(SeafFile*)entry];
-        else if ([entry isKindOfClass:[SeafDir class]])
-            [self deleteDir: (SeafDir*)entry];
-    } else if ([S_REDOWNLOAD isEqualToString:title]) {
-        SeafFile *file = (SeafFile *)[self getDentrybyIndexPath:_selectedindex tableView:self.tableView];
-        [self redownloadFile:file];
-    } else if ([S_RENAME isEqualToString:title]) {
-        SeafFile *file = (SeafFile *)[self getDentrybyIndexPath:_selectedindex tableView:self.tableView];
-        [self renameFile:file];
     } else if ([S_UPLOAD isEqualToString:title]) {
         SeafFile *file = (SeafFile *)[self getDentrybyIndexPath:_selectedindex tableView:self.tableView];
         [file update:self];
         [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:_selectedindex] withRowAnimation:UITableViewRowAnimationNone];
-    } else if ([S_SHARE_EMAIL isEqualToString:title]) {
-        self.state = STATE_SHARE_EMAIL;
-        SeafBase *entry = (SeafBase *)[self getDentrybyIndexPath:_selectedindex tableView:self.tableView];
-        if (!entry.shareLink) {
-            [SVProgressHUD showWithStatus:NSLocalizedString(@"Generate share link ...", @"Seafile")];
-            [entry generateShareLink:self];
-        } else {
-            [self generateSharelink:entry WithResult:YES];
-        }
-    } else if ([S_SHARE_LINK isEqualToString:title]) {
-        self.state = STATE_SHARE_LINK;
-        SeafBase *entry = (SeafBase *)[self getDentrybyIndexPath:_selectedindex tableView:self.tableView];
-        if (!entry.shareLink) {
-            [SVProgressHUD showWithStatus:NSLocalizedString(@"Generate share link ...", @"Seafile")];
-            [entry generateShareLink:self];
-        } else {
-            [self generateSharelink:entry WithResult:YES];
-        }
     } else if ([S_SORT_NAME isEqualToString:title]) {
         NSString *key = [SeafGlobal.sharedObject objectForKey:@"SORT_KEY"];
         if ([@"NAME" caseInsensitiveCompare:key] != NSOrderedSame) {
@@ -1147,6 +1146,9 @@ enum {
 {
     [c.navigationController dismissViewControllerAnimated:YES completion:nil];
     NSArray *idxs = [self.tableView indexPathsForSelectedRows];
+    if (!idxs && _selectedindex) {
+        idxs = @[_selectedindex];
+    }
     if (!idxs) return;
     NSMutableArray *entries = [[NSMutableArray alloc] init];
     for (NSIndexPath *indexPath in idxs) {
@@ -1346,69 +1348,12 @@ enum {
             [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:NSLocalizedString(@"Failed to generate share link of directory '%@'", @"Seafile"), entry.name]];
         return;
     }
-    [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"Generate share link success", @"Seafile")];
-
-    if (self.state == STATE_SHARE_EMAIL) {
-        [self sendMailInApp:entry];
-    } else if (self.state == STATE_SHARE_LINK){
-        UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-        [pasteboard setString:entry.shareLink];
-    }
+    
+    [SVProgressHUD dismiss];
+    
+    NSURL *shareURL = [NSURL URLWithString:entry.shareLink];
+    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[shareURL] applicationActivities:nil];
+    [self presentViewController:activityController animated:YES completion:nil];
 }
 
-#pragma mark - sena mail inside app
-- (void)sendMailInApp:(SeafBase *)entry
-{
-    Class mailClass = (NSClassFromString(@"MFMailComposeViewController"));
-    if (!mailClass) {
-        [self alertWithTitle:NSLocalizedString(@"This function is not supportted yet，you can copy it to the pasteboard and send mail by yourself", @"Seafile")];
-        return;
-    }
-    if (![mailClass canSendMail]) {
-        [self alertWithTitle:NSLocalizedString(@"The mail account has not been set yet", @"Seafile")];
-        return;
-    }
-
-    SeafAppDelegate *appdelegate = (SeafAppDelegate *)[[UIApplication sharedApplication] delegate];
-    MFMailComposeViewController *mailPicker = appdelegate.globalMailComposer;    mailPicker.mailComposeDelegate = self;
-    NSString *emailSubject, *emailBody;
-    if ([entry isKindOfClass:[SeafFile class]]) {
-        emailSubject = [NSString stringWithFormat:NSLocalizedString(@"File '%@' is shared with you using %@", @"Seafile"), entry.name, APP_NAME];
-        emailBody = [NSString stringWithFormat:NSLocalizedString(@"Hi,<br/><br/>Here is a link to <b>'%@'</b> in my %@:<br/><br/> <a href=\"%@\">%@</a>\n\n", @"Seafile"), entry.name, APP_NAME, entry.shareLink, entry.shareLink];
-    } else {
-        emailSubject = [NSString stringWithFormat:NSLocalizedString(@"Directory '%@' is shared with you using %@", @"Seafile"), entry.name, APP_NAME];
-        emailBody = [NSString stringWithFormat:NSLocalizedString(@"Hi,<br/><br/>Here is a link to directory <b>'%@'</b> in my %@:<br/><br/> <a href=\"%@\">%@</a>\n\n", @"Seafile"), entry.name, APP_NAME, entry.shareLink, entry.shareLink];
-    }
-    [mailPicker setSubject:emailSubject];
-    [mailPicker setMessageBody:emailBody isHTML:YES];
-    [self presentViewController:mailPicker animated:YES completion:nil];
-}
-
-#pragma mark - MFMailComposeViewControllerDelegate
-- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
-{
-    NSString *msg;
-    switch (result) {
-        case MFMailComposeResultCancelled:
-            msg = @"cancalled";
-            break;
-        case MFMailComposeResultSaved:
-            msg = @"saved";
-            break;
-        case MFMailComposeResultSent:
-            msg = @"sent";
-            break;
-        case MFMailComposeResultFailed:
-            msg = @"failed";
-            break;
-        default:
-            msg = @"";
-            break;
-    }
-    Debug("share file:send mail %@\n", msg);
-    [self dismissViewControllerAnimated:YES completion:^{
-        SeafAppDelegate *appdelegate = (SeafAppDelegate *)[[UIApplication sharedApplication] delegate];
-        [appdelegate cycleTheGlobalMailComposer];
-    }];
-}
 @end

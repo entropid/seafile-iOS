@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-
 enum {
     EDITOP_SPACE = 0,
     EDITOP_MKDIR = 1,
@@ -43,7 +42,8 @@ enum {
 #import "EGORefreshTableHeaderView.h"
 #import "SeafDir.h"
 #import "SeafFile.h"
-
+#import "MGSwipeTableCell.h"
+#import "MGSwipeButton.h"
 
 @interface SeafFileViewController : UITableViewController <SeafDentryDelegate, SeafFileUpdateDelegate> {
 }
