@@ -845,6 +845,7 @@ enum {
     } else if ([_curEntry isKindOfClass:[SeafDir class]]) {
         SeafFileViewController *controller = [[UIStoryboard storyboardWithName:@"FolderView_iPad" bundle:nil] instantiateViewControllerWithIdentifier:@"MASTERVC"];
         [controller setDirectory:(SeafDir *)_curEntry];
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
         [self.navigationController pushViewController:controller animated:YES];
     }
 }
