@@ -172,7 +172,6 @@
 
 - (void)showEditFileMenu:(UILongPressGestureRecognizer *)gestureRecognizer
 {
-    UIActionSheet *actionSheet;
     if (gestureRecognizer.state != UIGestureRecognizerStateBegan)
         return;
 
@@ -187,17 +186,10 @@
 
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_selectedindex];
     NSString *cancelTitle = IsIpad() ? nil : NSLocalizedString(@"Cancel", @"Seafile");
-    if (ios8) {
-        NSMutableArray *arr = [[NSMutableArray alloc] initWithObjects:S_REDOWNLOAD, nil];
-        if (file.mpath) [arr addObject:S_UPLOAD];
-        [self showAlertWithAction:arr fromRect:cell.frame];
-    } else {
-        if (file.mpath)
-            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:cancelTitle destructiveButtonTitle:nil otherButtonTitles:S_REDOWNLOAD, S_UPLOAD, nil];
-        else
-            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:cancelTitle destructiveButtonTitle:nil otherButtonTitles:S_REDOWNLOAD, nil];
-        [actionSheet showFromRect:cell.frame inView:self.tableView animated:YES];
-    }
+    
+    NSMutableArray *arr = [[NSMutableArray alloc] initWithObjects:S_REDOWNLOAD, nil];
+    if (file.mpath) [arr addObject:S_UPLOAD];
+    [self showAlertWithAction:arr fromRect:cell.frame];
 }
 
 #pragma mark - Table view data source

@@ -132,19 +132,11 @@
     UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
     self.navigationItem.leftBarButtonItem = cancelItem;
 
-    if (ios7) {
-        loginButton.layer.borderColor = [[UIColor lightGrayColor] CGColor];
-        loginButton.layer.borderWidth = 0.5f;
-        loginButton.layer.cornerRadius = 5.0f;
-        shibButton.layer.borderColor = [[UIColor lightGrayColor] CGColor];
-        shibButton.layer.borderWidth = 0.5f;
-        shibButton.layer.cornerRadius = 5.0f;
-    } else {
-        loginButton.reversesTitleShadowWhenHighlighted = NO;
-        shibButton.reversesTitleShadowWhenHighlighted = NO;
-        loginButton.tintColor=[UIColor whiteColor];
-        shibButton.tintColor=[UIColor whiteColor];
-    }
+    loginButton.reversesTitleShadowWhenHighlighted = NO;
+    shibButton.reversesTitleShadowWhenHighlighted = NO;
+    loginButton.tintColor=[UIColor whiteColor];
+    shibButton.tintColor=[UIColor whiteColor];
+    
     [loginButton setTitle:NSLocalizedString(@"Login", @"Seafile") forState:UIControlStateNormal];
     [loginButton setTitle:NSLocalizedString(@"Login", @"Seafile") forState:UIControlStateHighlighted];
     [shibButton setTitle:NSLocalizedString(@"Shibboleth", @"Seafile") forState:UIControlStateNormal];
@@ -156,20 +148,19 @@
 
     self.title = [APP_NAME stringByAppendingFormat:@" %@", NSLocalizedString(@"Account", @"Seafile")];
     CGRect rect = CGRectMake(0, 0, 90, 25);
-    NSString *align = ios7 ? @"  " :  @"";
     UILabel *serverLabel = [[UILabel alloc] initWithFrame:rect];
-    serverLabel.text = [align stringByAppendingString:NSLocalizedString(@"Server", @"Seafile")];
+    serverLabel.text = NSLocalizedString(@"Server", @"Seafile");
     serverLabel.font = [UIFont boldSystemFontOfSize:14];
     serverTextField.leftView = serverLabel;
     serverTextField.leftViewMode = UITextFieldViewModeAlways;
 
     UILabel *nameLabel = [[UILabel alloc] initWithFrame:rect];
-    nameLabel.text = [align stringByAppendingString:NSLocalizedString(@"Username", @"Seafile")];
+    nameLabel.text = NSLocalizedString(@"Username", @"Seafile");
     nameLabel.font = [UIFont boldSystemFontOfSize:14];
     usernameTextField.leftView = nameLabel;
     usernameTextField.leftViewMode = UITextFieldViewModeAlways;
     UILabel *passwordLabel = [[UILabel alloc] initWithFrame:rect];
-    passwordLabel.text = [align stringByAppendingString:NSLocalizedString(@"Password", @"Seafile")];
+    passwordLabel.text = NSLocalizedString(@"Password", @"Seafile");
     passwordLabel.font = [UIFont boldSystemFontOfSize:14];
     passwordTextField.leftView = passwordLabel;
     passwordTextField.leftViewMode = UITextFieldViewModeAlways;

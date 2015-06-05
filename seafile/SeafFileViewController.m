@@ -324,21 +324,7 @@ enum {
 
 - (void)editSheet:(id)sender
 {
-    if (ios8) {
-        [self showAlertWithAction:[NSArray arrayWithObjects:S_NEWFILE, S_MKDIR, S_EDIT, S_SORT_NAME, S_SORT_MTIME, nil] fromRect:self.editItem.customView.frame];
-    } else {
-        if (self.actionSheet) {
-            [self.actionSheet dismissWithClickedButtonIndex:-1 animated:NO];
-            self.actionSheet = nil;
-        } else {
-            NSString *cancelTitle = IsIpad() ? nil : NSLocalizedString(@"Cancel", @"Seafile");
-            self.actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:cancelTitle destructiveButtonTitle:nil otherButtonTitles:S_NEWFILE, S_MKDIR, S_EDIT, S_SORT_NAME, S_SORT_MTIME, nil];
-            if (IsIpad())
-                [self.actionSheet showFromBarButtonItem:self.editItem animated:YES];
-            else
-                [self.actionSheet showInView:[UIApplication sharedApplication].keyWindow];
-        }
-    }
+    [self showAlertWithAction:[NSArray arrayWithObjects:S_NEWFILE, S_MKDIR, S_EDIT, S_SORT_NAME, S_SORT_MTIME, nil] fromRect:self.editItem.customView.frame];
 }
 
 - (void)initNavigationItems:(SeafDir *)directory

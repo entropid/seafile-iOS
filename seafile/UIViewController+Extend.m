@@ -62,21 +62,7 @@ ADD_DYNAMIC_PROPERTY(void (^)(NSString *),handler_input,setHandler_input);
 
 - (void)alertWithTitle:(NSString*)title message:(NSString*)message handler:(void (^)())handler;
 {
-    if (ios8)
-        [Utils alertWithTitle:title message:message handler:handler from:self];
-    else {
-        self.handler_ok = nil;
-        self.handler_cancel = handler;
-        self.handler_input = nil;
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:title
-                                                       message:message
-                                                      delegate:self
-                                             cancelButtonTitle:@"OK"
-                                             otherButtonTitles:nil, nil];
-        alert.transform = CGAffineTransformTranslate( alert.transform, 0.0, 130.0 );
-        alert.alertViewStyle = UIAlertViewStyleDefault;
-        [alert show];
-    }
+    [Utils alertWithTitle:title message:message handler:handler from:self];
 }
 
 - (void)alertWithTitle:(NSString*)title message:(NSString*)message
@@ -97,16 +83,7 @@ ADD_DYNAMIC_PROPERTY(void (^)(NSString *),handler_input,setHandler_input);
 
 - (void)alertWithTitle:(NSString *)title message:(NSString*)message yes:(void (^)())yes no:(void (^)())no
 {
-    if (ios8) {
-        [Utils alertWithTitle:title message:message yes:yes no:no from:self];
-    } else {
-        self.handler_ok = yes;
-        self.handler_cancel = no;
-        self.handler_input = nil;
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Seafile") otherButtonTitles:NSLocalizedString(@"OK", @"Seafile"), nil];
-        alert.alertViewStyle = UIAlertViewStyleDefault;
-        [alert show];
-    }
+    [Utils alertWithTitle:title message:message yes:yes no:no from:self];
 }
 
 - (void)popupInputView:(NSString *)title placeholder:(NSString *)tip secure:(BOOL)secure handler:(void (^)(NSString *input))handler
@@ -116,19 +93,7 @@ ADD_DYNAMIC_PROPERTY(void (^)(NSString *),handler_input,setHandler_input);
 
 - (void)popupInputView:(NSString *)title placeholder:(NSString *)tip prefilled:(BOOL)prefilled secure:(BOOL)secure handler:(void (^)(NSString *input))handler
 {
-    if (ios8) {
-        [Utils popupInputView:title placeholder:tip prefilled:prefilled secure:secure handler:handler from:self];
-    } else {
-        self.handler_ok = nil;
-        self.handler_cancel = nil;
-        self.handler_input = handler;
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Seafile") otherButtonTitles:NSLocalizedString(@"OK", @"Seafile"), nil];
-        if (secure)
-            alert.alertViewStyle = UIAlertViewStyleSecureTextInput;
-        else
-            alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-        [alert show];
-    }
+    [Utils popupInputView:title placeholder:tip prefilled:prefilled secure:secure handler:handler from:self];
 }
 
 - (UIBarButtonItem *)getBarItem:(NSString *)imageName action:(SEL)action size:(float)size;

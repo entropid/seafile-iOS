@@ -329,9 +329,6 @@ enum PREVIEW_STATE {
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
-    if (IsIpad() && self.hideMaster && ios7) {
-        self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height + self.splitViewController.tabBarController.tabBar.frame.size.height);
-    }
     CGRect r = CGRectMake(self.view.frame.origin.x, 0, self.view.frame.size.width, self.view.frame.size.height);
     if (self.state == PREVIEW_SUCCESS) {
         self.fileViewController.view.frame = r;
@@ -817,7 +814,7 @@ enum PREVIEW_STATE {
 
 - (id <QLPreviewItem>)previewController:(QLPreviewController *)controller previewItemAtIndex:(NSInteger)index;
 {
-    if (!ios7 && index < 0) index = 0;
+    if (index < 0) index = 0;
     if (index < 0 || index >= 1) {
         return nil;
     }

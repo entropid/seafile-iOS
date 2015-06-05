@@ -108,10 +108,7 @@
         [conn checkAutoSync];
     }
     [SVProgressHUD setBackgroundColor:[UIColor colorWithRed:250.0/256 green:250.0/256 blue:250.0/256 alpha:1.0]];
-    if (ios8)
-         [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
-    else
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkPhotoChanges:) name:ALAssetsLibraryChangedNotification object:SeafGlobal.sharedObject.assetsLibrary];
+    [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -356,8 +353,6 @@
     self.viewControllers = [NSArray arrayWithArray:tabs.viewControllers];
     _tabbarController = tabs;
     _tabbarController.delegate = self;
-    if (ios7)
-        _tabbarController.view.backgroundColor = [UIColor colorWithRed:150.0f/255 green:150.0f/255 blue:150.0f/255 alpha:1];
 }
 
 - (UITabBarController *)tabbarController
@@ -469,15 +464,8 @@
     if (self.window.rootViewController.presentedViewController) {
         c = self.window.rootViewController.presentedViewController;
     }
-    if (ios8)
-        [Utils alertWithTitle:title message:message yes:yes no:no from:c];
-    else {
-        self.handler_ok = yes;
-        self.handler_cancel = no;
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Seafile") otherButtonTitles:NSLocalizedString(@"OK", @"Seafile"), nil];
-        alert.alertViewStyle = UIAlertViewStyleDefault;
-        [alert show];
-    }
+    
+    [Utils alertWithTitle:title message:message yes:yes no:no from:c];
 }
 
 - (BOOL)continueWithInvalidCert:(NSURLProtectionSpace *)protectionSpace
