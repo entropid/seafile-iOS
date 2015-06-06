@@ -124,7 +124,7 @@ enum {
     [self setDirectory:(SeafDir *)conn.rootFolder];
 }
 
-- (void)showLodingView
+- (void)showLoadingView
 {
     if (!self.loadingView) {
         self.loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -370,7 +370,7 @@ enum {
 {
     [super viewWillAppear:animated];
     if (!_directory.hasCache) {
-        [self showLodingView];
+        [self showLoadingView];
         self.state = STATE_LOADING;
     }
     [_connection checkSyncDst:_directory];
