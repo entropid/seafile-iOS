@@ -31,4 +31,6 @@ This fork implemented a series of improvements on the original version.
 
 4. Search bar removed (it doesn't work unless you have a license for the Pro version)
 
-5. More to come…
+5. Popover menu for directory actions
+
+6. More to come…
