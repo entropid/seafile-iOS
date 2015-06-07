@@ -59,7 +59,9 @@ enum {
 @property (readonly) EGORefreshTableHeaderView* refreshHeaderView;
 
 @property (retain) NSIndexPath *selectedindex;
-@property (readonly) NSArray *editToolItems;
+@property (readonly) UIView *shadowView;
+@property (readonly) UITableView *editToolTable;
+@property (readonly) NSArray *editToolTableCells;
 
 @property (strong) UIActionSheet *actionSheet;
 
@@ -77,7 +79,8 @@ enum {
 @synthesize curEntry = _curEntry;
 @synthesize selectAllItem = _selectAllItem, selectNoneItem = _selectNoneItem;
 @synthesize selectedindex = _selectedindex;
-@synthesize editToolItems = _editToolItems;
+@synthesize editToolTable = _editToolTable;
+@synthesize editToolTableCells = _editToolTableCells;
 
 @synthesize popoverController;
 
@@ -88,33 +91,49 @@ enum {
     return (SeafDetailViewController *)[appdelegate detailViewControllerAtIndex:TABBED_SEAFILE];
 }
 
-- (NSArray *)editToolItems
+- (UITableView *)editToolTable
 {
-    if (!_editToolItems) {
-        int i;
-        UIBarButtonItem *flexibleFpaceItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
-        UIBarButtonItem *fixedSpaceItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:self action:nil];
-
-        NSArray *itemsTitles = [NSArray arrayWithObjects:S_MKDIR, S_NEWFILE, NSLocalizedString(@"Copy", @"Seafile"), NSLocalizedString(@"Move", @"Seafile"), S_DELETE, NSLocalizedString(@"PasteTo", @"Seafile"), NSLocalizedString(@"MoveTo", @"Seafile"), NSLocalizedString(@"Cancel", @"Seafile"), nil ];
-
-        UIBarButtonItem *items[EDITOP_NUM];
-        items[0] = flexibleFpaceItem;
-
-        fixedSpaceItem.width = 38.0f;;
-        for (i = 1; i < itemsTitles.count + 1; ++i) {
-            UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:[itemsTitles objectAtIndex:i-1] style:UIBarButtonItemStylePlain target:self action:@selector(editOperation:)];
-            
-            if ([itemsTitles objectAtIndex:i-1] == S_DELETE) {
-                [button setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor redColor]} forState:UIControlStateNormal];
-            }
-            
-            items[i] = button;
-            items[i].tag = i;
-        }
-
-        _editToolItems = [NSArray arrayWithObjects:items[EDITOP_COPY], items[EDITOP_MOVE], items[EDITOP_SPACE], items[EDITOP_DELETE], nil ];
+    if (!_editToolTable) {
+         _editToolTable = [[UITableView alloc] initWithFrame:(CGRect){0, 0, 0, 0}];
+        _editToolTable.delegate = self;
+        _editToolTable.dataSource = self;
+        
+        _editToolTable.scrollEnabled = NO;
+        
+        _shadowView = [[UIView alloc] initWithFrame:self.tableView.frame];
+        _shadowView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.35];
+        _shadowView.hidden = YES;
+        _shadowView.alpha = 0.0;
+        
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideEditSheet)];
+        [_shadowView addGestureRecognizer:tapGesture];
     }
-    return _editToolItems;
+    return _editToolTable;
+}
+
+- (NSArray *)editToolTableCells
+{
+    if (!_editToolTableCells) {
+        NSArray *actions = @[S_NEWFILE, S_MKDIR, S_EDIT, S_SORT_NAME, S_SORT_MTIME];
+        NSDictionary *images = @{S_NEWFILE: @"action-new-file",
+                                 S_MKDIR: @"action-new-folder",
+                                 S_EDIT: @"action-edit",
+                                 S_SORT_NAME: @"action-sort",
+                                 S_SORT_MTIME: @"action-sort"};
+        
+        NSMutableArray *tableCells = [NSMutableArray arrayWithCapacity:actions.count];
+        for (NSString *label in actions) {
+            UITableViewCell *cell = [[UITableViewCell alloc] init];
+            cell.textLabel.text = label;
+            cell.imageView.image = [UIImage imageNamed:images[label]];
+            cell.backgroundColor = [UIColor whiteColor];
+            
+            [tableCells addObject:cell];
+        }
+        
+        _editToolTableCells = [NSArray arrayWithArray:tableCells];
+    }
+    return _editToolTableCells;
 }
 
 - (void)setConnection:(SeafConnection *)conn
@@ -261,7 +280,15 @@ enum {
     if (editing) {
         if (![appdelegate checkNetworkStatus]) return;
         [self.navigationController.toolbar sizeToFit];
-        [self setToolbarItems:self.editToolItems];
+        
+        UIBarButtonItem *copyButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Copy", @"Seafile") style:UIBarButtonItemStylePlain target:self action:@selector(copyFiles:)];
+        UIBarButtonItem *moveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Move", @"Seafile") style:UIBarButtonItemStylePlain target:self action:@selector(moveFiles:)];
+        UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+        UIBarButtonItem *deleteButton = [[UIBarButtonItem alloc] initWithTitle:S_DELETE style:UIBarButtonItemStylePlain target:self action:@selector(deleteFiles:)];
+        [deleteButton setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor redColor]} forState:UIControlStateNormal];
+        
+        [self setToolbarItems:@[copyButton, moveButton, flexibleSpace, deleteButton]];
+        
         [self noneSelected:YES];
         [self.photoItem setEnabled:NO];
         [self.navigationController setToolbarHidden:NO animated:YES];
@@ -322,9 +349,43 @@ enum {
     }
 }
 
-- (void)editSheet:(id)sender
+- (void)showEditSheet:(id)sender
 {
-    [self showAlertWithAction:[NSArray arrayWithObjects:S_NEWFILE, S_MKDIR, S_EDIT, S_SORT_NAME, S_SORT_MTIME, nil] fromRect:self.editItem.customView.frame];
+    if (!self.editToolTable.superview) {
+        [self.view.superview addSubview:self.shadowView];
+        [self.view.superview addSubview:self.editToolTable];
+        
+        self.editToolTable.frame = (CGRect){0, 64.0, self.tableView.frame.size.width, 0};
+        self.editToolTable.hidden = YES;
+    }
+    
+    if (!self.editToolTable.hidden) {
+        [self hideEditSheet];
+        return;
+    }
+    
+    [self.editToolTable reloadData];
+    
+    self.editToolTable.hidden = NO;
+    self.shadowView.hidden = NO;
+    
+    [UIView animateWithDuration:0.25f animations:^{
+        CGRect newFrame = (CGRect){0, self.editToolTable.frame.origin.y, self.editToolTable.frame.size.width, [self.editToolTable numberOfRowsInSection:0] * 50};
+        self.editToolTable.frame = newFrame;
+        self.shadowView.alpha = 1.0;
+    }];
+}
+
+- (void)hideEditSheet
+{
+    [UIView animateWithDuration:0.25f animations:^{
+        CGRect newFrame = (CGRect){0, self.editToolTable.frame.origin.y, self.editToolTable.frame.size.width, 0.0};
+        self.editToolTable.frame = newFrame;
+        self.shadowView.alpha = 0.0;
+    } completion:^(BOOL finished) {
+        self.shadowView.hidden = YES;
+        self.editToolTable.hidden = YES;
+    }];
 }
 
 - (void)initNavigationItems:(SeafDir *)directory
@@ -333,7 +394,7 @@ enum {
         if (directory.editable) {
             self.photoItem = [self getBarItem:@"plus".navItemImgName action:@selector(addPhotos:)size:20];
             self.doneItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(editDone:)];
-            self.editItem = [self getBarItemAutoSize:@"ellipsis".navItemImgName action:@selector(editSheet:)];
+            self.editItem = [self getBarItemAutoSize:@"ellipsis".navItemImgName action:@selector(showEditSheet:)];
             UIBarButtonItem *space = [self getSpaceBarItem:16.0];
             self.rightItems = [NSArray arrayWithObjects: self.editItem, space, self.photoItem, nil];
             self.navigationItem.rightBarButtonItems = self.rightItems;
@@ -396,11 +457,17 @@ enum {
         [self.popoverController dismissPopoverAnimated:YES];
         self.popoverController = nil;
     }
+    
+    [self.editToolTable removeFromSuperview];
 }
 #pragma mark - Table View
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    if ([tableView isEqual:self.editToolTable]) {
+        return 1;
+    }
+    
     if (![_directory isKindOfClass:[SeafRepos class]]) {
         return 1;
     }
@@ -409,11 +476,24 @@ enum {
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if ([tableView isEqual:self.editToolTable]) {
+        return self.editToolTableCells.count - 1;
+    }
+    
     if (![_directory isKindOfClass:[SeafRepos class]]) {
         return _directory.allItems.count;
     }
     NSArray *repos =  [[((SeafRepos *)_directory) repoGroups] objectAtIndex:section];
     return repos.count;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([tableView isEqual:self.editToolTable]) {
+        return 50;
+    }
+    
+    return [super tableView:tableView heightForRowAtIndexPath:indexPath];
 }
 
 - (UITableViewCell *)getCell:(NSString *)CellIdentifier forTableView:(UITableView *)tableView
@@ -424,25 +504,6 @@ enum {
         cell = [cells objectAtIndex:0];
     }
     return cell;
-}
-
-- (void)showAlertWithAction:(NSArray *)arr fromRect:(CGRect)rect
-{
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    for (NSString *title in arr) {
-        UIAlertAction *action = [UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            [self handleAction:title];
-        }];
-        [alert addAction:action];
-    }
-    if (!IsIpad()){
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Seafile") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-        }];
-        [alert addAction:cancelAction];
-    }
-    alert.popoverPresentationController.sourceView = self.view;
-    alert.popoverPresentationController.sourceRect = rect;
-    [self presentViewController:alert animated:true completion:nil];
 }
 
 - (UITableViewCell *)getSeafUploadFileCell:(SeafUploadFile *)file forTableView:(UITableView *)tableView
@@ -638,6 +699,33 @@ enum {
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ([tableView isEqual:self.editToolTable]) {
+        switch (indexPath.row) {
+            case 0:
+                return self.editToolTableCells[indexPath.row];
+                
+            case 1:
+                return self.editToolTableCells[indexPath.row];
+                
+            case 2:
+                return self.editToolTableCells[indexPath.row];
+                
+            case 3:
+            {
+                NSString *key = [SeafGlobal.sharedObject objectForKey:@"SORT_KEY"];
+                if ([@"NAME" caseInsensitiveCompare:key] != NSOrderedSame) {
+                    return self.editToolTableCells[indexPath.row];
+                }
+                else {
+                    return self.editToolTableCells[indexPath.row + 1];
+                }
+            }
+                
+            default:
+                return nil;
+        }
+    }
+    
     NSObject *entry = [self getDentrybyIndexPath:indexPath tableView:tableView];
     if (!entry) return [[UITableViewCell alloc] init];
     
@@ -654,6 +742,10 @@ enum {
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ([tableView isEqual:self.editToolTable]) {
+        return indexPath;
+    }
+    
     NSObject *entry  = [self getDentrybyIndexPath:indexPath tableView:tableView];
     if (tableView.editing && [entry isKindOfClass:[SeafUploadFile class]])
         return nil;
@@ -662,6 +754,10 @@ enum {
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ([tableView isEqual:self.editToolTable]) {
+        return NO;
+    }
+    
     NSObject *entry  = [self getDentrybyIndexPath:indexPath tableView:tableView];
     return ![entry isKindOfClass:[SeafUploadFile class]];
 }
@@ -799,6 +895,46 @@ enum {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ([tableView isEqual:self.editToolTable]) {
+        switch (indexPath.row) {
+            case 0:
+                [self popupCreateView];
+                break;
+                
+            case 1:
+                [self popupMkdirView];
+                break;
+                
+            case 2:
+                [self editStart:nil];
+                break;
+                
+            case 3:
+            {
+                NSString *key = [SeafGlobal.sharedObject objectForKey:@"SORT_KEY"];
+                if ([@"NAME" caseInsensitiveCompare:key] != NSOrderedSame) {
+                    [SeafGlobal.sharedObject setObject:@"NAME" forKey:@"SORT_KEY"];
+                }
+                else {
+                    [SeafGlobal.sharedObject setObject:@"MTIME" forKey:@"SORT_KEY"];
+                }
+                
+                [_directory reSortItems];
+                [self.tableView reloadData];
+                
+                break;
+            }
+            
+            default:
+                break;
+        }
+        
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        [self hideEditSheet];
+        
+        return;
+    }
+    
     if (self.navigationController.topViewController != self)   return;
     _selectedindex = indexPath;
     if (tableView.editing == YES) {
@@ -843,6 +979,10 @@ enum {
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ([tableView isEqual:self.editToolTable]) {
+        return;
+    }
+    
     if (tableView.editing == YES) {
         if (![tableView indexPathsForSelectedRows])
             [self noneSelected:YES];
@@ -851,6 +991,10 @@ enum {
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    if ([tableView isEqual:self.editToolTable]) {
+        return nil;
+    }
+    
     if (![_directory isKindOfClass:[SeafRepos class]])
         return nil;
 
@@ -998,47 +1142,47 @@ enum {
 }
 
 #pragma mark - edit files
-
-
-- (void)editOperation:(id)sender
+- (void)copyFiles:(id)sender
 {
     SeafAppDelegate *appdelegate = (SeafAppDelegate *)[[UIApplication sharedApplication] delegate];
-
+    
     if (self != appdelegate.fileVC) {
-        return [appdelegate.fileVC editOperation:sender];
+        return [appdelegate.fileVC copyFiles:sender];
     }
-    switch ([sender tag]) {
-        case EDITOP_MKDIR:
-            [self popupMkdirView];
-            break;
+    
+    self.state = STATE_COPY;
+    [self popupDirChooseView:nil];
+}
 
-        case EDITOP_CREATE:
-            [self popupCreateView];
-            break;
-
-        case EDITOP_COPY:
-            self.state = STATE_COPY;
-            [self popupDirChooseView:nil];
-            break;
-        case EDITOP_MOVE:
-            self.state = STATE_MOVE;
-            [self popupDirChooseView:nil];
-            break;
-        case EDITOP_DELETE: {
-            NSArray *idxs = [self.tableView indexPathsForSelectedRows];
-            if (!idxs) return;
-            NSMutableArray *entries = [[NSMutableArray alloc] init];
-            for (NSIndexPath *indexPath in idxs) {
-                [entries addObject:[_directory.allItems objectAtIndex:indexPath.row]];
-            }
-            self.state = STATE_DELETE;
-            [_directory delEntries:entries];
-            [SVProgressHUD showWithStatus:NSLocalizedString(@"Deleting files ...", @"Seafile")];
-            break;
-        }
-        default:
-            break;
+- (void)moveFiles:(id)sender
+{
+    SeafAppDelegate *appdelegate = (SeafAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    if (self != appdelegate.fileVC) {
+        return [appdelegate.fileVC moveFiles:sender];
     }
+    
+    self.state = STATE_MOVE;
+    [self popupDirChooseView:nil];
+}
+
+- (void)deleteFiles:(id)sender
+{
+    SeafAppDelegate *appdelegate = (SeafAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    if (self != appdelegate.fileVC) {
+        return [appdelegate.fileVC deleteFiles:sender];
+    }
+    
+    NSArray *idxs = [self.tableView indexPathsForSelectedRows];
+    if (!idxs) return;
+    NSMutableArray *entries = [[NSMutableArray alloc] init];
+    for (NSIndexPath *indexPath in idxs) {
+        [entries addObject:[_directory.allItems objectAtIndex:indexPath.row]];
+    }
+    self.state = STATE_DELETE;
+    [_directory delEntries:entries];
+    [SVProgressHUD showWithStatus:NSLocalizedString(@"Deleting files ...", @"Seafile")];
 }
 
 - (void)deleteFile:(SeafFile *)file
@@ -1068,45 +1212,6 @@ enum {
 {
     _curEntry = file;
     [self popupRenameView:file.name];
-}
-
-#pragma mark - UIActionSheetDelegate
-- (void)handleAction:(NSString *)title
-{
-    if ([S_NEWFILE isEqualToString:title]) {
-        [self popupCreateView];
-    } else if ([S_MKDIR isEqualToString:title]) {
-        [self popupMkdirView];
-    } else if ([S_EDIT isEqualToString:title]) {
-        [self editStart:nil];
-    } else if ([S_UPLOAD isEqualToString:title]) {
-        SeafFile *file = (SeafFile *)[self getDentrybyIndexPath:_selectedindex tableView:self.tableView];
-        [file update:self];
-        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:_selectedindex] withRowAnimation:UITableViewRowAnimationNone];
-    } else if ([S_SORT_NAME isEqualToString:title]) {
-        NSString *key = [SeafGlobal.sharedObject objectForKey:@"SORT_KEY"];
-        if ([@"NAME" caseInsensitiveCompare:key] != NSOrderedSame) {
-            [SeafGlobal.sharedObject setObject:@"NAME" forKey:@"SORT_KEY"];
-            [_directory reSortItems];
-            [self.tableView reloadData];
-        }
-    } else if ([S_SORT_MTIME isEqualToString:title]) {
-        NSString *key = [SeafGlobal.sharedObject objectForKey:@"SORT_KEY"];
-        if ([@"MTIME" caseInsensitiveCompare:key] != NSOrderedSame) {
-            [SeafGlobal.sharedObject setObject:@"MTIME" forKey:@"SORT_KEY"];
-            [_directory reSortItems];
-            [self.tableView reloadData];
-        }
-    }
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    self.actionSheet = nil;
-    if (buttonIndex < 0 || buttonIndex >= actionSheet.numberOfButtons)
-        return;
-    NSString *title = [actionSheet buttonTitleAtIndex:buttonIndex];
-    [self handleAction:title];
 }
 
 - (void)backgroundUpload:(SeafUploadFile *)ufile

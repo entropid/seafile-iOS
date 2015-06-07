@@ -8,19 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-enum {
-    EDITOP_SPACE = 0,
-    EDITOP_MKDIR = 1,
-    EDITOP_CREATE,
-    EDITOP_COPY,
-    EDITOP_MOVE,
-    EDITOP_DELETE,
-    EDITOP_PASTE,
-    EDITOP_MOVETO,
-    EDITOP_CANCEL,
-    EDITOP_NUM,
-};
-
 #define S_MKDIR NSLocalizedString(@"New Folder", @"Seafile")
 #define S_NEWFILE NSLocalizedString(@"New File", @"Seafile")
 #define S_SORT_NAME NSLocalizedString(@"Sort By Name", @"Seafile")
